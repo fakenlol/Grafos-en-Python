@@ -25,7 +25,6 @@ def lee_grafo_stdin():
       b = 0
       aristas.append(tupla)
   grafo = (vertices, aristas)
-  print(grafo)
   return grafo
   
 def cuenta_grado(grafo):
@@ -37,7 +36,7 @@ def cuenta_grado(grafo):
   for vertice in grafo[0]:
     diccionario[vertice] = list.count(vertice)
   
-  print(diccionario)
+  print("Grados de todos los vertices: " + str(diccionario))
   return diccionario
 
 def lista_a_adyacencia(grafo_lista):
@@ -58,10 +57,8 @@ def lista_a_adyacencia(grafo_lista):
     ady = [0]*(len(grafo_lista[0]))
   return (grafo_lista[0], matriz)
 
-def componentes_conexas():
+def componentes_conexas(grafo):
     componentes = []
-
-    grafo = lee_grafo_stdin()
 
     for tupla in grafo[1]:
       
@@ -79,10 +76,40 @@ def componentes_conexas():
         elif rTupla[1] in tupla and not rTupla[0] in tupla:
           tupla.append(rTupla[0])
           componentes.remove(rTupla)
-    print(componentes)
+    status = 0
 
-grafo1 = (["A","B","C","D","E"],[("A","B"),("B","C"),("D","E")])
+    for vertice in grafo[0]:
+        for tupla in componentes:
+            if vertice in tupla:
+              status = 1
+        if status == 0:
+            componentes.append([vertice])
+        status = 0
+    return(componentes)
 
-#grafo = lee_grafo_stdin()
-#cuenta_grado(grafo1)
-componentes_conexas()
+def es_conexo(grafo_lista):
+    grafo = []
+    grafo = componentes_conexas(grafo_lista)
+    cant_comps = len(grafo)
+    
+    if cant_comps:
+        return True
+        
+#grafo1 = (["A","B","C","D","E"],[("A","B"),("B","C"),("D","E")])
+
+def main():
+    grafo = lee_grafo_stdin()
+    print("Grafo en forma de lista: " + str(grafo))
+
+    print("\nGrados de cada vertice del grafo: " + str(cuenta_grado(grafo)))
+
+    print("\nLista de adyacencias: " + str(lista_a_adyacencia(grafo)))
+
+    print("\nComponentes conexas del grafo: " + str(componentes_conexas(grafo)))
+
+    if not es_conexo(grafo):
+        print ("Es un grafo conexo")
+    else:
+        print ("No es un grafo conexo")
+main()
+
