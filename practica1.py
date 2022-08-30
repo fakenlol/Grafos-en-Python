@@ -36,7 +36,6 @@ def cuenta_grado(grafo):
   for vertice in grafo[0]:
     diccionario[vertice] = list.count(vertice)
   
-  print("Grados de todos los vertices: " + str(diccionario))
   return diccionario
 
 def lista_a_adyacencia(grafo_lista):
@@ -60,6 +59,8 @@ def lista_a_adyacencia(grafo_lista):
 def componentes_conexas(grafo):
     componentes = []
 
+    componentesToDelete = []
+
     for tupla in grafo[1]:
       
       list = [tupla[0],tupla[1]]
@@ -72,10 +73,13 @@ def componentes_conexas(grafo):
       for rTupla in componentes:
         if rTupla[0] in tupla and not rTupla[1] in tupla:
           tupla.append(rTupla[1])
-          componentes.remove(rTupla)
+          componentesToDelete.append(rTupla)
         elif rTupla[1] in tupla and not rTupla[0] in tupla:
           tupla.append(rTupla[0])
-          componentes.remove(rTupla)
+          componentesToDelete.append(rTupla)
+      for tupleToRemove in componentesToDelete:
+        componentes.remove(tupleToRemove)
+
     status = 0
 
     for vertice in grafo[0]:
@@ -92,10 +96,12 @@ def es_conexo(grafo_lista):
     grafo = componentes_conexas(grafo_lista)
     cant_comps = len(grafo)
     
-    if cant_comps:
+    if cant_comps == 1:
         return True
         
-#grafo1 = (["A","B","C","D","E"],[("A","B"),("B","C"),("D","E")])
+grafo1 = (["A","B","C","D"],[("A","B"),("B","D"),("D","C")])
+grafo2 = (["A","B","C","D","E"],[("A","B"),("B","D"),("D","C"),("A","E")])
+grafo3 = (["A","B","C","D","E"],[("A","B"),("C","D")])
 
 def main():
     grafo = lee_grafo_stdin()
@@ -103,13 +109,12 @@ def main():
 
     print("\nGrados de cada vertice del grafo: " + str(cuenta_grado(grafo)))
 
-    print("\nLista de adyacencias: " + str(lista_a_adyacencia(grafo)))
+    lista_a_adyacencia(grafo)
 
     print("\nComponentes conexas del grafo: " + str(componentes_conexas(grafo)))
 
-    if not es_conexo(grafo):
+    if es_conexo(grafo):
         print ("Es un grafo conexo")
     else:
         print ("No es un grafo conexo")
 main()
-
