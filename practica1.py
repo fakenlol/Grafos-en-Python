@@ -79,6 +79,7 @@ def componentes_conexas(grafo):
           componentesToDelete.append(rTupla)
       for tupleToRemove in componentesToDelete:
         componentes.remove(tupleToRemove)
+      componentesToDelete = []
 
     status = 0
 
@@ -98,23 +99,3 @@ def es_conexo(grafo_lista):
     
     if cant_comps == 1:
         return True
-        
-grafo1 = (["A","B","C","D"],[("A","B"),("B","D"),("D","C")])
-grafo2 = (["A","B","C","D","E"],[("A","B"),("B","D"),("D","C"),("A","E")])
-grafo3 = (["A","B","C","D","E"],[("A","B"),("C","D")])
-
-def main():
-    grafo = lee_grafo_stdin()
-    print("Grafo en forma de lista: " + str(grafo))
-
-    print("\nGrados de cada vertice del grafo: " + str(cuenta_grado(grafo)))
-
-    lista_a_adyacencia(grafo)
-
-    print("\nComponentes conexas del grafo: " + str(componentes_conexas(grafo)))
-
-    if es_conexo(grafo):
-        print ("Es un grafo conexo")
-    else:
-        print ("No es un grafo conexo")
-main()
