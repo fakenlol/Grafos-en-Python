@@ -57,40 +57,44 @@ def lista_a_adyacencia(grafo_lista):
   return (grafo_lista[0], matriz)
 
 def componentes_conexas(grafo):
-    componentes = []
-
-    componentesToDelete = []
+    aristas = []
+    verts = grafo[0]
 
     for tupla in grafo[1]:
-      
       list = [tupla[0],tupla[1]]
       revlist = [tupla[1],tupla[0]]
+      if not list in aristas and not revlist in aristas:
+        aristas.append(list)
 
-      if not list in componentes and not revlist in componentes:
-        componentes.append(list)
+    aristas_sup = aristas
+    componentsToDelete = []
 
-    for tupla in componentes:
-      for rTupla in componentes:
-        if rTupla[0] in tupla and not rTupla[1] in tupla:
-          tupla.append(rTupla[1])
-          componentesToDelete.append(rTupla)
-        elif rTupla[1] in tupla and not rTupla[0] in tupla:
-          tupla.append(rTupla[0])
-          componentesToDelete.append(rTupla)
-      for tupleToRemove in componentesToDelete:
-        componentes.remove(tupleToRemove)
-      componentesToDelete = []
+    for t in aristas:
+      for st in aristas:
+        if st[0] in t and not st[1] in t:
+          componentsToDelete.append(st)
+          t.append(st[1])
+        elif st[1] in t and not st[0] in t:
+          componentsToDelete.append(st)
+          t.append(st[0])
+        elif st[0] in t and st[1] in t and st != t:
+          componentsToDelete.append(st)
+      for toDelete in componentsToDelete:
+        if toDelete in aristas:
+          aristas.remove(toDelete)
+      componentsToDelete = []
 
     status = 0
 
-    for vertice in grafo[0]:
-        for tupla in componentes:
-            if vertice in tupla:
-              status = 1
-        if status == 0:
-            componentes.append([vertice])
-        status = 0
-    return(componentes)
+    for v in verts:
+      for comps in aristas:
+        if v in comps:
+          status += 1
+      if status == 0:
+        aristas.append([v])
+      status = 0
+
+    return(aristas)
 
 def es_conexo(grafo_lista):
     grafo = []
