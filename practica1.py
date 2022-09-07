@@ -28,7 +28,6 @@ def lee_grafo_stdin():
   return grafo
   
 def cuenta_grado(grafo):
-  count = 0
   diccionario = {}
 
   list = [item for elem in grafo[1] for item in elem]
@@ -103,3 +102,4 @@ def es_conexo(grafo_lista):
     
     if cant_comps == 1:
         return True
+    return False

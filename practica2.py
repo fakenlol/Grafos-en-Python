@@ -1,3 +1,4 @@
+from math import perm
 from practica1 import *
 import random
 
@@ -15,29 +16,42 @@ def graph_has_eulerian_circuit(graph):
 
 
 def find_eulerian_circuit(graph):
-
     if graph_has_eulerian_circuit(graph):
-
         aristas = graph[1]
-        aristasToDelete = []
         pos = random.choice(graph[0])
         permCircuit = []
         tempGraph = graph
-        grades = cuenta_grado(graph)
-
         while aristas != []:
             for arista in aristas:
-                
-                if arista[0] == pos or arista[1] == pos:
+                grados = cuenta_grado(graph)
+                if arista[0] == pos:
                     tempGraph[1].remove(arista)
                     if es_conexo(tempGraph):
-                        aristasToDelete.append(arista)
+                        permCircuit.append(pos)
+                        pos = arista[1]
                     else:
-                        tempGraph[1].append(arista)
-            for arista in aristasToDelete:
-                aristas.remove(arista)
-            aristasToDelete = []
-        
+                        if grados[pos] == 1:
+                            permCircuit.append(pos)
+                            graph[0].remove(pos)
+                            grados = cuenta_grado(graph)
+                            pos = arista[1]
+                        else:
+                            tempGraph[1].append(arista)
+                elif arista[1] == pos:
+                    tempGraph[1].remove(arista)
+                    if es_conexo(tempGraph):
+                        permCircuit.append(pos)
+                        pos = arista[0]
+                    else:
+                        if grados[pos] == 1:
+                            permCircuit.append(pos)
+                            graph[0].remove(pos)
+                            grados = cuenta_grado(graph)
+                            pos = arista[0]
+                        else:
+                            tempGraph[1].append(arista)
+        permCircuit.append(permCircuit[0])
+        print(permCircuit)
 
     else:
         print("No posee circuito euleriano")
