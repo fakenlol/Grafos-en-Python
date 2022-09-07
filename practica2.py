@@ -1,4 +1,5 @@
 from practica1 import *
+import random
 
 def graph_has_eulerian_circuit(graph):
     if es_conexo(graph):
@@ -18,21 +19,26 @@ def find_eulerian_circuit(graph):
     if graph_has_eulerian_circuit(graph):
 
         aristas = graph[1]
-        aristasToSave = aristas
-        pos = graph[0][0]
-        cantAristas = len(aristas)
+        aristasToDelete = []
+        pos = random.choice(graph[0])
+        permCircuit = []
+        tempGraph = graph
+        grades = cuenta_grado(graph)
 
-        def find_circuit(aristas,aristasToSave,pos):
-            
-            if len(aristasToSave) == cantAristas:
-                print(aristasToSave)
-                return True
-            else:
-                #aristas.append((arista[1],arista[0]))
-                if aristas[][] == pos :
-                    aristasToSave.append(arista + find_circuit(aristas,aristasToSave,arista[1]))
+        while aristas != []:
+            for arista in aristas:
+                
+                if arista[0] == pos or arista[1] == pos:
+                    tempGraph[1].remove(arista)
+                    if es_conexo(tempGraph):
+                        aristasToDelete.append(arista)
+                    else:
+                        tempGraph[1].append(arista)
+            for arista in aristasToDelete:
+                aristas.remove(arista)
+            aristasToDelete = []
+        
 
-        find_circuit(aristas,aristasToSave,pos)
     else:
         print("No posee circuito euleriano")
 
